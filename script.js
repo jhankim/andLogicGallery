@@ -22,6 +22,7 @@ var andLogicGallery = function(){
     };
 
     this.fetchRecent = function(){
+
         var endpoint = '/media/recent/'
         var requestUrl = _this.baseUrl + 'customers/' + _this.customerId + endpoint + '?auth_token=' + _this.apiKey + '&version=v' + _this.version + '&count=' + _this.itemsPerPage;
 
@@ -34,12 +35,12 @@ var andLogicGallery = function(){
                 });
             }
         });
+
     }
 
     this.filterClick = function(filterItem){
-        var streamId = $(filterItem).data('id');
 
-        
+        var streamId = $(filterItem).data('id');
 
         if ( $(filterItem).data('id') !== 'all' ){
 
@@ -140,13 +141,17 @@ var andLogicGallery = function(){
         // console.log('is classes part of filters? ', _this.containsAll(filterIds, classes));
 
         return _this.containsAll(filterIds, classes);
+
     }
 
     this.containsAll = function(needles, haystack){ 
+
         for(var i = 0 , len = needles.length; i < len; i++){
             if($.inArray(needles[i], haystack) == -1) return false;
         }
+        
         return true;
+
     }
 
     this.init = function(){
