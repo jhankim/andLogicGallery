@@ -11,7 +11,7 @@ var andLogicGallery = function(){
     this.version = '2.2';
     this.apiKey = 'f48eeae508d1b1f3133df366679eb2b567bae5dc8058d69d679dc5cb140eb857'
     this.itemsPerPage = '50';
-
+    
     this.galleryList = $('ul#gallery-list');
     this.filterList = $('ul#filter-list');
     this.filterListItem = $('ul#filter-list li');
@@ -75,11 +75,13 @@ var andLogicGallery = function(){
 
     this.showAll = function(){
 
+        console.log('showall()');
+        console.log(_this.filterList.find('.checked'));
+
         _this.filterList.find('li.checked').removeClass('checked');
 
         _this.viewAll.addClass('checked');
         _this.galleryList.find('li').show();
-
     }
 
     this.updateDom = function(){
@@ -113,6 +115,8 @@ var andLogicGallery = function(){
     }
 
     this.filterDom = function(){
+
+        console.log('filterdom()');
 
         var selectedFilters = _this.filterList.find('.checked').not(_this.viewAll);
         var selectedFiltersIds = [];
