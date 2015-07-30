@@ -7,7 +7,7 @@ var andLogicGallery = function(){
     this.version = '2.2';
     this.apiKey = 'f48eeae508d1b1f3133df366679eb2b567bae5dc8058d69d679dc5cb140eb857'
 
-    this.itemsPerPage = '16';
+    this.itemsPerPage = '50';
     this.galleryList = $('ul#gallery-list');
     this.filterList = $('ul#filter-list');
     this.filterListItem = $('ul#filter-list li');
@@ -35,9 +35,11 @@ var andLogicGallery = function(){
     this.filterClick = function(filterItem){
         var streamId = $(filterItem).data('id');
 
-        $(filterItem).toggleClass('checked');
+        
 
-        if ( $(filterItem).hasClass('checked') ){
+        if ( $(filterItem).data('id') !== 'all' ){
+
+            $(filterItem).toggleClass('checked');
 
             var endpoint = '/streams/' + streamId + '/media/recent';
             var requestUrl = _this.baseUrl + endpoint + '?auth_token=' + _this.apiKey + '&version=v' + _this.version + '&count=' + _this.itemsPerPage;
@@ -64,11 +66,8 @@ var andLogicGallery = function(){
         _this.listPool['media'] = mediaObj;
     }
 
-    this.addToDom = function(mediaObj){
-
-    }
-
     this.updateDom = function(){
+
         $.each(_this.listPool, function(key, value){
             if ( _this.galleryList.find('li[data-id="'+this.id+'"]').length ){
                 console.log(this.id + ' is already found in DOM, ignoring...');
@@ -98,20 +97,46 @@ var andLogicGallery = function(){
     }
 
     this.filterDom = function(){
+
         var selectedFilters = _this.filterList.find('.checked').not(_this.viewAll);
         var selectedFiltersIds = [];
 
         for (var i = selectedFilters.length - 1; i >= 0; i--) {
-            
             selectedFiltersIds.push($(selectedFilters[i]).data('id'));
-            console.log(selectedFiltersIds);
-        };
+        }
 
         $.each(_this.galleryList.find('li'), function(key, value){
-            var classes = $(value).attr('class').split(" ");
-            console.log(classes);
+            if ( !_this.compareItemAgainstFilter(value, selectedFiltersIds) ) {
+                $(value).hide();
+            } else {
+                $(value).show();
+            }
         });
-    }   
+
+        if ( selectedFiltersIds.length == 0 ) {
+
+            _this.viewAll.addClass('checked');
+            _this.galleryList.find('li').show();
+
+        } else {
+            _this.viewAll.removeClass('checked');
+        }
+
+    }
+
+    this.compareItemAgainstFilter = function(item, filterIds){
+
+        var containsFilter = false;
+
+        for (var i = filterIds.length - 1; i >= 0; i--) {
+            if ( $(item).hasClass('stream-' + filterIds[i]) ) {
+                containsFilter = true;
+            }
+        };
+
+        return containsFilter;
+
+    }
 
     this.init = function(){
 
