@@ -110,8 +110,8 @@ var andLogicGallery = function(){
                     listHtml.addClass('stream-' + this.id);
                 });
 
-                // append to galleryList
-                _this.galleryList.append(listHtml);
+                // prepend to galleryList
+                _this.galleryList.prepend(listHtml);
             }
         });
 
