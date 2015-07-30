@@ -30,8 +30,10 @@ var andLogicGallery = function(){
             url: requestUrl,
             success: function(response){
                 $.each(response.data._embedded.media, function(key, value){
+
                     _this.addToPool(this);
                     _this.updateDom();
+
                 });
             }
         });
@@ -61,6 +63,10 @@ var andLogicGallery = function(){
                 }
             });
 
+        } else if ( $(filterItem).data('id') == 'all' ) {
+
+            _this.showAll();
+
         }
 
         _this.filterDom();
@@ -69,6 +75,16 @@ var andLogicGallery = function(){
 
     this.addToPool = function(mediaObj){
         _this.listPool['media'] = mediaObj;
+    }
+
+    this.showAll = function(){
+
+        console.log(_this.filterList.find('.checked'));
+
+        _this.filterList.find('.checked').removeClass('.checked');
+
+        _this.viewAll.addClass('checked');
+        _this.galleryList.find('li').show();
     }
 
     this.updateDom = function(){
@@ -120,8 +136,7 @@ var andLogicGallery = function(){
 
         if ( selectedFiltersIds.length == 0 ) {
 
-            _this.viewAll.addClass('checked');
-            _this.galleryList.find('li').show();
+            _this.showAll();
 
         } else {
             _this.viewAll.removeClass('checked');
@@ -149,7 +164,7 @@ var andLogicGallery = function(){
         for(var i = 0 , len = needles.length; i < len; i++){
             if($.inArray(needles[i], haystack) == -1) return false;
         }
-        
+
         return true;
 
     }
@@ -163,7 +178,11 @@ var andLogicGallery = function(){
 
         _this.filterListItem.click(function(e){
             _this.filterClick(this);
-        });
+        }); 
+
+        _this.viewAll.click(function(e){
+            _this.showAll();
+        }); 
 
     }
 
