@@ -48,9 +48,14 @@ table {
 }
 
 /* Custom CSS */
+body {
+	font-family: Arial, sans-serif;
+}
+
 ul#filter-list {
 	list-style: none;
 	text-align: center;
+	margin: 10px auto;
 }
 
 ul#filter-list li {
@@ -58,6 +63,15 @@ ul#filter-list li {
 	vertical-align: top;
 	padding: 5px;
 	border-radius: 3px;
+	border: 1px solid #ccc;
+	cursor: pointer;
+}
+
+ul#filter-list li.checked::before {
+	display:inline-block;
+	content:'\2713';
+	color:red;
+	padding:0 6px 0 0;
 }
 
 ul#gallery-list {
