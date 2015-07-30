@@ -102,12 +102,19 @@ var andLogicGallery = function(){
         var selectedFiltersIds = [];
 
         for (var i = selectedFilters.length - 1; i >= 0; i--) {
-            console.log(selectedFilters[i]);
+            
+            selectedFiltersIds.push($(selectedFilters[i]).data('id'));
+            console.log(selectedFiltersIds);
         };
+
+        $.each(_this.galleryList.find('li'), function(key, value){
+            var classes = $(value).attr('class').split(" ");
+            console.log(classes);
+        });
     }   
 
     this.init = function(){
-        
+
         console.log('init!');
 
         _this.fetchRecent();
