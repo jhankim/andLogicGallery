@@ -1,3 +1,24 @@
+;!function(e){e.fn.classes=function(t){var n=[];e.each(this,function(e,t){var r=t.className.split(/\s+/);for(var i in r){var s=r[i];if(-1===n.indexOf(s)){n.push(s)}}});if("function"===typeof t){for(var r in n){t(n[r])}}return n}}(jQuery);
+
+jQuery.extend({
+    compare: function (arrayA, arrayB) {
+        if (arrayA.length != arrayB.length) { return false; }
+        // sort modifies original array
+        // (which are passed by reference to our method!)
+        // so clone the arrays before sorting
+        var a = jQuery.extend(true, [], arrayA);
+        var b = jQuery.extend(true, [], arrayB);
+        a.sort(); 
+        b.sort();
+        for (var i = 0, l = a.length; i < l; i++) {
+            if (a[i] !== b[i]) { 
+                return false;
+            }
+        }
+        return true;
+    }
+});
+
 var andLogicGallery = function(){
 
     var _this = this;
@@ -125,17 +146,15 @@ var andLogicGallery = function(){
     }
 
     this.compareItemAgainstFilter = function(item, filterIds){
+        var classes = $(item).classes();
 
-        var containsFilter = false;
-
-        for (var i = filterIds.length - 1; i >= 0; i--) {
-            if ( $(item).hasClass('stream-' + filterIds[i]) ) {
-                containsFilter = true;
-            }
+        for (var i = classes.length - 1; i >= 0; i--) {
+            classes[i] = parseInt( classes[i].substr(7) );
         };
 
-        return containsFilter;
-
+        console.log(classes, filterIds);
+        console.log($.compare(classes, filterIds));
+        return $.compare(classes, filterIds);
     }
 
     this.init = function(){
