@@ -1,24 +1,7 @@
+// plugin for $.classes() method
 ;!function(e){e.fn.classes=function(t){var n=[];e.each(this,function(e,t){var r=t.className.split(/\s+/);for(var i in r){var s=r[i];if(-1===n.indexOf(s)){n.push(s)}}});if("function"===typeof t){for(var r in n){t(n[r])}}return n}}(jQuery);
 
-jQuery.extend({
-    compare: function (arrayA, arrayB) {
-        if (arrayA.length != arrayB.length) { return false; }
-        // sort modifies original array
-        // (which are passed by reference to our method!)
-        // so clone the arrays before sorting
-        var a = jQuery.extend(true, [], arrayA);
-        var b = jQuery.extend(true, [], arrayB);
-        a.sort(); 
-        b.sort();
-        for (var i = 0, l = a.length; i < l; i++) {
-            if (a[i] !== b[i]) { 
-                return false;
-            }
-        }
-        return true;
-    }
-});
-
+// start function object
 var andLogicGallery = function(){
 
     var _this = this;
@@ -91,10 +74,10 @@ var andLogicGallery = function(){
 
         $.each(_this.listPool, function(key, value){
             if ( _this.galleryList.find('li[data-id="'+this.id+'"]').length ){
-                console.log(this.id + ' is already found in DOM, ignoring...');
+                // console.log(this.id + ' is already found in DOM, ignoring...');
             } else {
 
-                console.log(this.id + ' is not found in DOM, adding...');
+                // console.log(this.id + ' is not found in DOM, adding...');
 
                 // save stream data for this photo
                 var streamData = this._embedded['streams:all']._embedded.stream;
@@ -146,15 +129,24 @@ var andLogicGallery = function(){
     }
 
     this.compareItemAgainstFilter = function(item, filterIds){
+
         var classes = $(item).classes();
 
         for (var i = classes.length - 1; i >= 0; i--) {
             classes[i] = parseInt( classes[i].substr(7) );
         };
 
-        console.log(classes, filterIds);
-        console.log($.compare(classes, filterIds));
-        return $.compare(classes, filterIds);
+        // console.log('for item id: ' + $(item).data('id') + ' classes: ', classes, 'filter selection: ', filterIds );
+        // console.log('is classes part of filters? ', _this.containsAll(filterIds, classes));
+
+        return _this.containsAll(filterIds, classes);
+    }
+
+    this.containsAll = function(needles, haystack){ 
+        for(var i = 0 , len = needles.length; i < len; i++){
+            if($.inArray(needles[i], haystack) == -1) return false;
+        }
+        return true;
     }
 
     this.init = function(){
